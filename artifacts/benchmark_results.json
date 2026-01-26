@@ -1,0 +1,48 @@
+{
+  "retrieval": {
+    "batch_1": {
+      "batch_mean_ms": 0.07173532200977206,
+      "batch_p99_ms": 0.10681225794542114,
+      "per_query_mean_ms": 0.07173532200977206,
+      "per_query_p99_ms": 0.10681225794542114,
+      "throughput_qps": 13940.133981189576
+    },
+    "batch_8": {
+      "batch_mean_ms": 0.4764160479507631,
+      "batch_p99_ms": 0.5828999978257344,
+      "per_query_mean_ms": 0.059552005993845386,
+      "per_query_p99_ms": 0.0728624997282168,
+      "throughput_qps": 16792.04559630365
+    },
+    "batch_32": {
+      "batch_mean_ms": 1.8253567500323697,
+      "batch_p99_ms": 2.010500046526431,
+      "per_query_mean_ms": 0.057042398438511555,
+      "per_query_p99_ms": 0.06282812645395097,
+      "throughput_qps": 17530.819660010315
+    }
+  },
+  "model_inference": {
+    "batch_1": {
+      "batch_mean_ms": 1.0533526799699757,
+      "batch_p99_ms": 1.0998737494082886,
+      "per_sample_mean_ms": 1.0533526799699757,
+      "per_sample_p99_ms": 1.0998737494082886,
+      "throughput_samples_per_sec": 949.3496518454803
+    },
+    "batch_8": {
+      "batch_mean_ms": 1.6652594028029502,
+      "batch_p99_ms": 16.81307263002966,
+      "per_sample_mean_ms": 0.20815742535036877,
+      "per_sample_p99_ms": 2.1016340787537073,
+      "throughput_samples_per_sec": 4804.056344936092
+    },
+    "batch_32": {
+      "batch_mean_ms": 7.390397266135551,
+      "batch_p99_ms": 81.06887726098643,
+      "per_sample_mean_ms": 0.23094991456673597,
+      "per_sample_p99_ms": 2.533402414405826,
+      "throughput_samples_per_sec": 4329.943147526201
+    }
+  }
+}

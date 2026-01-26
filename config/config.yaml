@@ -1,0 +1,114 @@
+# Two-Tower Feed Recommender Configuration
+
+# Data Configuration
+data:
+  dataset_name: "MINDsmall"
+  data_dir: "data/mind"
+  train_dir: "data/mind/MINDsmall_train"
+  dev_dir: "data/mind/MINDsmall_dev"
+  max_history_len: 50
+  max_title_len: 30
+  max_abstract_len: 100
+  min_word_freq: 2
+  train_neg_samples: 4
+
+# Model Configuration
+model:
+  embedding_dim: 128
+  vocab_size: 50000
+  word_embedding_dim: 256
+  num_categories: 20
+  num_subcategories: 300
+  category_embedding_dim: 64
+  attention_heads: 8
+  dropout: 0.2
+
+# Two-Tower Specific
+two_tower:
+  temperature: 0.07
+  use_in_batch_negatives: true
+  num_sampled_negatives: 4
+  l2_normalize: true
+
+# Training Configuration
+training:
+  batch_size: 256
+  learning_rate: 0.001
+  weight_decay: 0.0001
+  num_epochs: 10
+  warmup_steps: 1000
+  gradient_accumulation_steps: 1
+  mixed_precision: true
+  max_grad_norm: 1.0
+  early_stopping_patience: 3
+  checkpoint_dir: "checkpoints"
+  log_interval: 100
+  eval_interval: 1000
+
+# FAISS Configuration
+faiss:
+  index_type: "IVF"
+  nlist: 100
+  nprobe: 10
+  use_gpu: false
+  index_path: "artifacts/faiss_index"
+
+# LightGBM Reranker Configuration
+reranker:
+  num_leaves: 31
+  max_depth: -1
+  learning_rate: 0.05
+  n_estimators: 100
+  objective: "lambdarank"
+  metric: "ndcg"
+  ndcg_eval_at: [10, 50, 100]
+  model_path: "artifacts/reranker.txt"
+
+# Serving Configuration
+serving:
+  host: "127.0.0.1"
+  port: 8000
+  num_workers: 4
+  retrieval_top_k: 100
+  final_top_k: 20
+
+# Redis Configuration
+redis:
+  host: "localhost"
+  port: 6379
+  db: 0
+  password: null
+  embedding_ttl: 3600
+  max_connections: 100
+
+# Airflow Configuration
+airflow:
+  dag_id: "feed_recommender_pipeline"
+  schedule_interval: "@daily"
+  start_date: "2024-01-01"
+  catchup: false
+
+# Drift Detection Configuration
+drift:
+  reference_window_days: 7
+  psi_threshold: 0.2
+  feature_columns:
+    - "category_distribution"
+    - "click_rate"
+    - "impression_count"
+
+# Evaluation Configuration
+evaluation:
+  recall_k: [10, 50, 100]
+  ndcg_k: [10, 50, 100]
+  batch_size: 512
+  num_workers: 4
+
+# Paths
+paths:
+  model_checkpoint: "artifacts/two_tower_model.pt"
+  item_embeddings: "artifacts/item_embeddings.npy"
+  item_id_mapping: "artifacts/item_id_mapping.json"
+  user_id_mapping: "artifacts/user_id_mapping.json"
+  vocab_path: "artifacts/vocab.json"
+  metrics_output: "artifacts/metrics.json"

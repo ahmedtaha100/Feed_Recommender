@@ -1,0 +1,9 @@
+{
+  "vocab_size": 238,
+  "num_categories": 11,
+  "num_subcategories": 35,
+  "num_news": 50001,
+  "num_users": 50000,
+  "num_train_samples": 136229,
+  "num_dev_samples": 174252
+}

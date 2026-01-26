@@ -1,0 +1,70 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: feed-recommender
+  labels:
+    app: feed-recommender
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      app: feed-recommender
+  template:
+    metadata:
+      labels:
+        app: feed-recommender
+    spec:
+      containers:
+      - name: api
+        image: feed-recommender:latest
+        ports:
+        - containerPort: 8000
+        env:
+        - name: REDIS_HOST
+          valueFrom:
+            configMapKeyRef:
+              name: feed-recommender-config
+              key: redis_host
+        - name: REDIS_PORT
+          valueFrom:
+            configMapKeyRef:
+              name: feed-recommender-config
+              key: redis_port
+        - name: CORS_ORIGINS
+          valueFrom:
+            configMapKeyRef:
+              name: feed-recommender-config
+              key: cors_origins
+        resources:
+          requests:
+            memory: "2Gi"
+            cpu: "500m"
+          limits:
+            memory: "4Gi"
+            cpu: "2000m"
+        livenessProbe:
+          httpGet:
+            path: /health
+            port: 8000
+          initialDelaySeconds: 30
+          periodSeconds: 10
+        readinessProbe:
+          httpGet:
+            path: /health
+            port: 8000
+          initialDelaySeconds: 5
+          periodSeconds: 5
+        volumeMounts:
+        - name: artifacts
+          mountPath: /app/artifacts
+          readOnly: true
+        - name: data
+          mountPath: /app/data/processed
+          readOnly: true
+      volumes:
+      - name: artifacts
+        persistentVolumeClaim:
+          claimName: artifacts-pvc
+      - name: data
+        persistentVolumeClaim:
+          claimName: data-pvc
